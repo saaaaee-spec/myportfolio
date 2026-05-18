@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="주원이 어휘">
+<title>주원이의 어휘가독해다 단어 인출시험 준비</title>
+<style>
+  /* System Korean fonts for offline reliability */
+  :root {
+    --font-display: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Nanum Gothic", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-body: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-script: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", -apple-system, system-ui, sans-serif;
+    --bg: #f5efe4;
+    --bg-soft: #faf6ed;
+    --paper: #fffdf7;
+    --ink: #2b2620;
+    --ink-soft: #6b5f52;
+    --accent: #d4683a;
+    --accent-soft: #f0b896;
+    --green: #6b8e4e;
+    --green-soft: #c8d9b0;
+    --red: #c44536;
+    --red-soft: #f0c2bc;
+    --blue: #4a6b8a;
+    --line: #d9cdb8;
+    --shadow: 0 8px 24px rgba(43, 38, 32, 0.12);
+    --shadow-lg: 0 20px 50px rgba(43, 38, 32, 0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-display);
+    touch-action: manipulation;
+  }
+  body {
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(212, 104, 58, 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(74, 107, 138, 0.05) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 14px;
+    /* Use dynamic viewport height for Safari iPad — adjusts for top/bottom bars */
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+  }
+  .app {
+    width: 100%;
+    max-width: 820px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ========== HEADER ========== */
+  .header {
+    text-align: center;
+    padding: 4px 0 10px;
+    border-bottom: 2px dashed var(--line);
+    margin-bottom: 12px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .header h1 {
+    font-family: var(--font-script); font-weight: 700;
+    font-size: 26px;
+    color: var(--ink);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    padding: 0 60px;
+  }
+  .header .sub {
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-top: 4px;
+  }
+  .back-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-family: var(--font-body);
+    font-size: 17px;
+    color: var(--ink);
+    cursor: pointer;
+    display: none;
+    box-shadow: var(--shadow);
+    z-index: 10;
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(212, 104, 58, 0.2);
+  }
+  .back-btn:active { transform: translateY(-50%) scale(0.95); background: var(--bg); }
+
+  /* ========== SCREENS ========== */
+  .screen { display: none; flex: 1; flex-direction: column; min-height: 0; }
+  .screen.active { display: flex; }
+
+  /* ========== HOME ========== */
+  #home-screen { justify-content: center; }
+  .lesson-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  .lesson-btn {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 22px;
+    padding: 28px 20px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: all 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .lesson-btn:nth-child(1) { background: #fce8d4; }
+  .lesson-btn:nth-child(2) { background: #d9e8d0; }
+  .lesson-btn:nth-child(3) { background: #d8e3ee; }
+  .lesson-btn:nth-child(4) { background: #f3dcd2; }
+  .lesson-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .lesson-btn .count {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+  .review-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 22px;
+    padding: 22px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 var(--accent);
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .review-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0 var(--accent);
+  }
+  .review-btn .badge {
+    background: var(--accent);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 18px;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+  }
+  .review-btn.empty {
+    background: var(--paper);
+    color: var(--ink-soft);
+    box-shadow: 6px 6px 0 var(--line);
+    cursor: default;
+  }
+  .review-btn.empty:active {
+    transform: none;
+    box-shadow: 6px 6px 0 var(--line);
+  }
+
+  /* ========== PRACTICE SCREEN ========== */
+  #practice-screen { gap: 10px; }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-body);
+    flex-shrink: 0;
+    font-size: 17px;
+    color: var(--ink-soft);
+  }
+  .progress-bar {
+    flex: 1;
+    height: 10px;
+    background: var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    border-radius: 10px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .score-pill {
+    display: flex;
+    gap: 8px;
+  }
+  .score-pill span {
+    font-family: var(--font-body);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+  .score-pill .correct { background: var(--green-soft); color: var(--green); }
+  .score-pill .wrong { background: var(--red-soft); color: var(--red); }
+
+  /* ========== FLIP CARD ========== */
+  .card-stage {
+    flex: 1;
+    perspective: 1500px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.6, 0, 0.3, 1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 24px;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-lg);
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-y: auto;
+  }
+  .card-face.front {
+    background-image:
+      repeating-linear-gradient(180deg, transparent 0, transparent 38px, rgba(212, 104, 58, 0.15) 38px, rgba(212, 104, 58, 0.15) 39px);
+  }
+  .card-face.front::before {
+    content: '';
+    position: absolute;
+    left: 32px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(196, 69, 54, 0.3);
+  }
+  .card-label {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--ink-soft);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .meaning-text {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 100%;
+  }
+  .meaning-text .multi-num {
+    font-family: var(--font-body);
+    color: var(--accent);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .card-face.back {
+    transform: rotateY(180deg);
+    background: #fff8e8;
+    background-image:
+      radial-gradient(circle at 30% 30%, rgba(212, 104, 58, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(74, 107, 138, 0.06) 0%, transparent 40%);
+  }
+  .answer-word {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 52px;
+    color: var(--ink);
+    letter-spacing: 3px;
+    margin: 8px 0 12px;
+  }
+  .answer-meaning {
+    font-family: var(--font-body);
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    max-width: 90%;
+  }
+  .tap-hint {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  /* ========== CANVAS / WRITING AREA ========== */
+  .write-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .write-label {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .canvas-wrap {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--ink);
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: none;
+    flex-shrink: 0;
+  }
+  .canvas-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(90deg, rgba(74, 107, 138, 0.15) 1px, transparent 1px);
+    background-size: 25% 100%;
+    pointer-events: none;
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: crosshair;
+    position: relative;
+    z-index: 1;
+  }
+  .canvas-tools {
+    display: flex;
+    gap: 8px;
+  }
+  .tool-btn {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .tool-btn:active { transform: scale(0.95); }
+
+  /* ========== ACTION BUTTONS ========== */
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .action-btn {
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 12px 8px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: all 0.12s ease;
+  }
+  .action-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .action-btn.reveal { background: #e8d8e8; }
+  .action-btn.correct { background: var(--green-soft); }
+  .action-btn.wrong { background: var(--red-soft); }
+  .action-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .action-btn:disabled:active {
+    transform: none;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .judgement-group { display: contents; }
+
+  /* ========== FINISH SCREEN ========== */
+  #finish-screen {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+  .finish-emoji {
+    font-size: 80px;
+    line-height: 1;
+  }
+  .finish-title {
+    font-family: var(--font-script); font-weight: 700;
+    font-size: 48px;
+    color: var(--ink);
+  }
+  .finish-stats {
+    display: flex;
+    gap: 30px;
+    margin: 10px 0 20px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat .num {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 48px;
+    color: var(--ink);
+    display: block;
+    line-height: 1;
+  }
+  .stat .label {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+  .stat.green .num { color: var(--green); }
+  .stat.red .num { color: var(--red); }
+  .finish-buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .finish-buttons button {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 14px 24px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .finish-buttons button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .finish-buttons .primary { background: var(--accent); color: white; }
+
+  /* ========== TOAST ========== */
+  .toast {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--ink);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 18px;
+    padding: 12px 24px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ========== GAME MODE ========== */
+  .game-btn {
+    background: linear-gradient(135deg, #f0b896 0%, #d4683a 100%);
+    color: white;
+    border: 3px solid var(--ink);
+    border-radius: 22px;
+    padding: 22px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .game-btn .sparkle {
+    font-size: 24px;
+  }
+
+  #game-screen { gap: 10px; }
+
+  .game-meaning-card {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    padding: 18px 22px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    flex-shrink: 0;
+    background-image:
+      repeating-linear-gradient(180deg, transparent 0, transparent 38px, rgba(212, 104, 58, 0.12) 38px, rgba(212, 104, 58, 0.12) 39px);
+  }
+  .game-meaning-card::before {
+    content: '';
+    position: absolute;
+    left: 32px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(196, 69, 54, 0.3);
+  }
+  .game-meaning-card .label {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--ink-soft);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .game-meaning-card .meaning {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .choices-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+  }
+  .choice-btn {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 18px 14px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .choice-btn:not(:disabled):active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .choice-btn .num {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--ink-soft);
+    background: var(--bg);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .choice-btn.correct-answer {
+    background: var(--green-soft);
+    animation: pulse-correct 0.6s ease;
+  }
+  .choice-btn.wrong-answer {
+    background: var(--red-soft);
+    animation: shake 0.5s ease;
+  }
+  .choice-btn:disabled { cursor: not-allowed; }
+  @keyframes pulse-correct {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
+  .game-next-btn {
+    background: var(--accent);
+    color: white;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    opacity: 0;
+    pointer-events: none;
+    flex-shrink: 0;
+    transition: opacity 0.3s ease, transform 0.12s ease;
+  }
+  .game-next-btn.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .game-next-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  /* ========== OFFLINE SAVE HELP ========== */
+  .save-btn {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 2px dashed var(--line);
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 14px;
+    width: 100%;
+    transition: all 0.15s ease;
+  }
+  .save-btn:active {
+    background: var(--paper);
+  }
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(43, 38, 32, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: 22px;
+    padding: 26px 22px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+  }
+  .modal h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  .modal .step {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .modal .step:last-of-type { border-bottom: none; }
+  .modal .step-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .modal .step p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .modal .key {
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .modal-close {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 14px;
+    padding: 12px 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 480px) {
+    .header h1 { font-size: 22px; padding: 0 50px; }
+    .lesson-btn { font-size: 22px; padding: 22px 14px; }
+    .meaning-text { font-size: 19px; }
+    .answer-word { font-size: 42px; }
+    .canvas-wrap { height: 90px; }
+    .action-btn { font-size: 15px; padding: 11px 6px; }
+    .game-meaning-card .meaning { font-size: 18px; }
+    .choice-btn { font-size: 17px; padding: 14px 10px; }
+  }
+  /* iPad landscape & short screens — keep everything compact */
+  @media (max-height: 750px) {
+    body { padding: 6px 12px; }
+    .header { padding: 2px 0 6px; margin-bottom: 8px; }
+    .header h1 { font-size: 22px; }
+    .header .sub { font-size: 13px; }
+    .card-face { padding: 14px 18px; }
+    .meaning-text { font-size: 19px; line-height: 1.4; }
+    .answer-word { font-size: 38px; margin: 4px 0 8px; }
+    .answer-meaning { font-size: 14px; }
+    .card-label { font-size: 13px; margin-bottom: 6px; }
+    .tap-hint { font-size: 12px; bottom: 8px; right: 12px; }
+    .canvas-wrap { height: 80px; }
+    .action-btn { font-size: 15px; padding: 10px 6px; }
+    .game-meaning-card { padding: 12px 18px; min-height: 80px; }
+    .game-meaning-card .meaning { font-size: 18px; line-height: 1.35; }
+    .game-meaning-card .label { font-size: 13px; margin-bottom: 6px; }
+    .choice-btn { font-size: 17px; padding: 12px 10px; }
+    .game-next-btn { padding: 10px; font-size: 16px; }
+    .write-label { font-size: 14px; }
+    .tool-btn { font-size: 13px; padding: 5px 12px; }
+  }
+  /* Tall screens (iPad portrait, large monitors) — more breathing room */
+  @media (min-height: 1000px) {
+    .canvas-wrap { height: 140px; }
+    .meaning-text { font-size: 26px; }
+    .answer-word { font-size: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <button class="back-btn" id="back-btn">← 처음으로</button>
+    <h1>주원이의 어휘가독해다 단어 인출시험 준비</h1>
+    <div class="sub" id="header-sub">강을 골라 시작해 보세요</div>
+  </header>
+
+  <!-- HOME -->
+  <section class="screen active" id="home-screen">
+    <div class="lesson-grid" id="lesson-grid"></div>
+    <button class="review-btn" id="review-btn">
+      <span>틀린 단어 복습</span>
+      <span class="badge" id="review-badge">0</span>
+    </button>
+    <button class="game-btn" id="game-btn">
+      <span class="sparkle">🎮</span>
+      <span>4지선다 게임</span>
+      <span class="sparkle">✨</span>
+    </button>
+    <button class="save-btn" id="save-btn">📱 아이패드에 저장해서 오프라인으로 쓰기</button>
+  </section>
+
+  <!-- GAME -->
+  <section class="screen" id="game-screen">
+    <div class="progress-row">
+      <span id="game-progress-text">1 / 24</span>
+      <div class="progress-bar"><div class="progress-fill" id="game-progress-fill"></div></div>
+      <div class="score-pill">
+        <span class="correct" id="game-score-correct">✓ 0</span>
+        <span class="wrong" id="game-score-wrong">✗ 0</span>
+      </div>
+    </div>
+
+    <div class="game-meaning-card">
+      <div class="label">이 뜻에 알맞은 단어는?</div>
+      <div class="meaning" id="game-meaning"></div>
+    </div>
+
+    <div class="choices-grid" id="choices-grid"></div>
+
+    <button class="game-next-btn" id="game-next-btn">다음 문제 →</button>
+  </section>
+
+  <!-- PRACTICE -->
+  <section class="screen" id="practice-screen">
+    <div class="progress-row">
+      <span id="progress-text">1 / 6</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="score-pill">
+        <span class="correct" id="score-correct">✓ 0</span>
+        <span class="wrong" id="score-wrong">✗ 0</span>
+      </div>
+    </div>
+
+    <div class="card-stage">
+      <div class="card" id="card">
+        <div class="card-face front">
+          <div class="card-label">뜻</div>
+          <div class="meaning-text" id="meaning-text">의미가 여기에 표시됩니다</div>
+          <div class="tap-hint">카드를 누르면 정답 보기</div>
+        </div>
+        <div class="card-face back">
+          <div class="card-label">정답</div>
+          <div class="answer-word" id="answer-word">단어</div>
+          <div class="answer-meaning" id="answer-meaning"></div>
+          <div class="tap-hint">다시 누르면 뜻 보기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="write-section">
+      <div class="write-label">
+        <span>✎ 여기에 답을 써 보세요</span>
+        <div class="canvas-tools">
+          <button class="tool-btn" id="clear-btn">지우기</button>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="write-canvas"></canvas>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn reveal" id="reveal-btn">정답 보기</button>
+      <button class="action-btn correct" id="correct-btn" disabled>맞았어요</button>
+      <button class="action-btn wrong" id="wrong-btn" disabled>틀렸어요</button>
+    </div>
+  </section>
+
+  <!-- FINISH -->
+  <section class="screen" id="finish-screen">
+    <div class="finish-emoji" id="finish-emoji">🎉</div>
+    <div class="finish-title" id="finish-title">잘했어요!</div>
+    <div class="finish-stats">
+      <div class="stat green"><span class="num" id="final-correct">0</span><span class="label">맞은 개수</span></div>
+      <div class="stat red"><span class="num" id="final-wrong">0</span><span class="label">틀린 개수</span></div>
+    </div>
+    <div class="finish-buttons">
+      <button id="retry-btn">다시 풀기</button>
+      <button class="primary" id="home-btn">처음으로</button>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="save-modal">
+  <div class="modal">
+    <h2>📱 아이패드에 저장하는 방법</h2>
+
+    <div class="step">
+      <div class="step-title">✨ 가장 쉬운 방법 — 홈 화면에 추가</div>
+      <p>1) 사파리(Safari)로 이 페이지를 열어주세요</p>
+      <p>2) 화면 아래쪽 <span class="key">공유 버튼</span> (네모에 위쪽 화살표) 누르기</p>
+      <p>3) <span class="key">홈 화면에 추가</span> 선택 → "추가" 누르기</p>
+      <p>4) 홈 화면에 아이콘이 생기면 그걸 누르면 앱처럼 실행돼요</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">💾 파일로 저장하기</div>
+      <p>1) 크롬에서 주소창 오른쪽 <span class="key">⋯</span> 또는 공유 버튼</p>
+      <p>2) <span class="key">파일에 저장</span> 선택</p>
+      <p>3) 파일 앱에서 그 HTML을 다시 누르면 열려요</p>
+    </div>
+
+    <div class="step">
+      <div class="step-title">💡 추천</div>
+      <p>사파리에서 <strong>"홈 화면에 추가"</strong>가 가장 안정적이고 빠르게 실행돼요. 인터넷이 없어도 잘 작동합니다.</p>
+    </div>
+
+    <button class="modal-close" id="modal-close">알겠어요!</button>
+  </div>
+</div>
+
+<script>
+// ============== DATA ==============
+// category 의미:
+//   action: 동작 동사 (실감 나다, 흉내 내다, 바라보다)
+//   noun: 명사 (경험, 등장인물, 소개, 함박웃음, 샘)
+//   emotion: 감정/심리 형용사·동사 (뿌듯하다, 흐뭇하다, 안타깝다 등)
+//   texture: 의태어/촉감 형용사 (산들산들하다, 몽실몽실하다 등)
+const LESSONS = {
+  "20강": [
+    { word: "실감 나다", meaning: "실제로 겪고 있다는 느낌이 들다", category: "action" },
+    { word: "흉내 내다", meaning: "다른 사람 또는 동물의 말, 소리, 행동 등을 그대로 옮기다", category: "action" },
+    { word: "바라보다", meaning: "(어떤 대상을) 바로 향해 보다", category: "action" },
+    { word: "경험", meaning: "자신이 실제로 해 보거나 겪어 봄", category: "noun" },
+    { word: "등장인물", meaning: "소설, 연극, 영화 등에 나오는 인물", category: "noun" },
+    { word: "소개", meaning: "① 서로 모르는 사람들 사이에서 양쪽이 알고 지내도록 관계를 맺어 줌  ② 모르는 사실이나 내용을 잘 알도록 해 주는 설명", multi: true, category: "noun" }
+  ],
+  "2강": [
+    { word: "뿌듯하다", meaning: "기쁨이 마음에 가득하다", category: "emotion" },
+    { word: "얼떨떨하다", meaning: "뜻밖의 일에 놀라 어떻게 해야 할지를 모르다", category: "emotion" },
+    { word: "흐뭇하다", meaning: "마음에 들어 매우 만족스럽다", category: "emotion" },
+    { word: "고달프다", meaning: "몸이나 처지 또는 하는 일이 몹시 힘들고 어렵다", category: "emotion" },
+    { word: "머쓱하다", meaning: "얼굴을 들지 못할 만큼 수줍거나 창피하거나 흥이 꺾여 어색하고 부끄럽다", category: "emotion" },
+    { word: "서먹하다", meaning: "익숙하거나 친하지 아니하여 어색하다", category: "emotion" }
+  ],
+  "3강": [
+    { word: "함박웃음", meaning: "크고 밝게 웃는 웃음", category: "noun" },
+    { word: "샘", meaning: "남의 것을 탐내거나, 자기보다 형편이 나은 사람을 부러워하거나 싫어하는 일. 또는 그런 마음", category: "noun" },
+    { word: "못마땅하다", meaning: "마음에 들지 않아 좋지 않다", category: "emotion" },
+    { word: "안타깝다", meaning: "뜻대로 되지 않거나 보기에 불쌍해서 가슴이 아프고 답답하다", category: "emotion" },
+    { word: "가엾다", meaning: "마음이 아플 정도로 불쌍하다", category: "emotion" },
+    { word: "후회하다", meaning: "이전에 자신이 한 일이 잘못임을 깨닫고 스스로 자신의 잘못을 꾸짖다", category: "emotion" }
+  ],
+  "4강": [
+    { word: "산들산들하다", meaning: "바람이 시원하고 부드럽게 연달아 불다", category: "texture" },
+    { word: "몽실몽실하다", meaning: "① 통통하게 살이 쪄서 매우 부드럽고 매끄러운 느낌이 있다  ② 구름이나 연기 등이 동글하게 뭉쳐서 가볍게 떠 있거나 떠오르는 듯하다", multi: true, category: "texture" },
+    { word: "만질만질하다", meaning: "만지거나 주무르기 좋게 연하고 부드럽다", category: "texture" },
+    { word: "찐득찐득하다", meaning: "① 눅눅하고 끈기가 있어 끈적끈적하게 자꾸 달라붙다  ② 질겨서 잘 끊어지지 않다", multi: true, category: "texture" },
+    { word: "부들부들하다", meaning: "① 살갗에 닿는 느낌이 매우 부드럽다  ② 몸이 자꾸 크게 부르르 떨리다", multi: true, category: "texture" },
+    { word: "푹신푹신하다", meaning: "매우 푸근하게 부드럽고 탄력이 있다", category: "texture" }
+  ]
+};
+
+// Flatten all 24 words with lesson info for game mode
+const ALL_WORDS = Object.entries(LESSONS).flatMap(([lessonName, words]) =>
+  words.map(w => ({ ...w, lesson: lessonName }))
+);
+
+// ============== STATE ==============
+const STORAGE_KEY = 'vocab_wrong_words_v1';
+let state = {
+  currentLesson: null,
+  cards: [],
+  index: 0,
+  correct: 0,
+  wrong: 0,
+  mode: 'lesson', // 'lesson' or 'review'
+  sessionWrong: [],
+  // Game mode state
+  gameQuestions: [],
+  gameIndex: 0,
+  gameCorrect: 0,
+  gameWrong: 0,
+  gameAnswered: false,
+  gameFirstAttempt: true  // tracks whether this question is on its first try
+};
+
+// ============== HELPERS ==============
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getWrongWords() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveWrongWords(list) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+
+function addToWrong(card, lessonName) {
+  const list = getWrongWords();
+  const exists = list.find(w => w.word === card.word && w.lesson === lessonName);
+  if (!exists) {
+    list.push({ ...card, lesson: lessonName });
+    saveWrongWords(list);
+  }
+}
+
+function removeFromWrong(word) {
+  const list = getWrongWords().filter(w => w.word !== word);
+  saveWrongWords(list);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+// ============== SCREEN MANAGEMENT ==============
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('back-btn').style.display = (id === 'home-screen') ? 'none' : 'block';
+
+  const sub = document.getElementById('header-sub');
+  if (id === 'home-screen') {
+    sub.textContent = '연습 방법을 골라 보세요';
+    renderHome();
+  } else if (id === 'practice-screen') {
+    sub.textContent = state.mode === 'review' ? '틀린 단어 복습 중' : state.currentLesson + ' 연습 중';
+  } else if (id === 'game-screen') {
+    sub.textContent = '4지선다 게임 — 모든 단어 24개';
+  } else if (id === 'finish-screen') {
+    sub.textContent = '오늘도 수고했어요';
+  }
+}
+
+// ============== HOME ==============
+function renderHome() {
+  const grid = document.getElementById('lesson-grid');
+  grid.innerHTML = '';
+  Object.keys(LESSONS).forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'lesson-btn';
+    btn.innerHTML = `${name}<span class="count">단어 ${LESSONS[name].length}개</span>`;
+    btn.onclick = () => startLesson(name);
+    grid.appendChild(btn);
+  });
+
+  const wrongList = getWrongWords();
+  const reviewBtn = document.getElementById('review-btn');
+  const badge = document.getElementById('review-badge');
+  badge.textContent = wrongList.length;
+  if (wrongList.length === 0) {
+    reviewBtn.classList.add('empty');
+    reviewBtn.onclick = () => showToast('틀린 단어가 없어요!');
+  } else {
+    reviewBtn.classList.remove('empty');
+    reviewBtn.onclick = startReview;
+  }
+}
+
+// ============== START SESSION ==============
+function startLesson(name) {
+  state.mode = 'lesson';
+  state.currentLesson = name;
+  state.cards = shuffle(LESSONS[name]);
+  state.index = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.sessionWrong = [];
+  showScreen('practice-screen');
+  // Resize canvas now that the practice screen is visible
+  requestAnimationFrame(() => { resizeCanvas(); renderCard(); });
+}
+
+function startReview() {
+  const wrongList = getWrongWords();
+  if (wrongList.length === 0) return;
+  state.mode = 'review';
+  state.currentLesson = '복습';
+  state.cards = shuffle(wrongList);
+  state.index = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.sessionWrong = [];
+  showScreen('practice-screen');
+  // Resize canvas now that the practice screen is visible
+  requestAnimationFrame(() => { resizeCanvas(); renderCard(); });
+}
+
+// ============== RENDER CARD ==============
+function renderCard() {
+  const card = document.getElementById('card');
+  const wasFlipped = card.classList.contains('flipped');
+  card.classList.remove('flipped');
+
+  // Update progress/score immediately (these are not on the card)
+  document.getElementById('progress-text').textContent = (state.index + 1) + ' / ' + state.cards.length;
+  document.getElementById('progress-fill').style.width = ((state.index) / state.cards.length * 100) + '%';
+  document.getElementById('score-correct').textContent = '✓ ' + state.correct;
+  document.getElementById('score-wrong').textContent = '✗ ' + state.wrong;
+
+  // Reset buttons
+  document.getElementById('correct-btn').disabled = true;
+  document.getElementById('wrong-btn').disabled = true;
+  document.getElementById('reveal-btn').textContent = '정답 보기';
+
+  clearCanvas();
+
+  const cur = state.cards[state.index];
+  const meaning = cur.meaning;
+
+  // If the card was flipped, wait for flip-back animation to finish before updating content
+  // so the back face (with old answer) doesn't briefly show the new word.
+  const updateContent = () => {
+    document.getElementById('meaning-text').innerHTML = meaning;
+    document.getElementById('answer-word').textContent = cur.word;
+    document.getElementById('answer-meaning').textContent = meaning.replace(/[①②③]/g, '').trim();
+  };
+
+  if (wasFlipped) {
+    // Card flip transition is 0.7s; update content after it completes
+    setTimeout(updateContent, 720);
+  } else {
+    updateContent();
+  }
+}
+
+// ============== ANSWER FLOW ==============
+function revealAnswer() {
+  const card = document.getElementById('card');
+  card.classList.toggle('flipped');
+  if (card.classList.contains('flipped')) {
+    document.getElementById('correct-btn').disabled = false;
+    document.getElementById('wrong-btn').disabled = false;
+    document.getElementById('reveal-btn').textContent = '뜻 다시 보기';
+  } else {
+    document.getElementById('reveal-btn').textContent = '정답 보기';
+  }
+}
+
+function markAnswer(isCorrect) {
+  const cur = state.cards[state.index];
+  if (isCorrect) {
+    state.correct++;
+    showToast('잘했어요! ✨');
+    // If in review mode and answered correctly, remove from wrong list
+    if (state.mode === 'review') {
+      removeFromWrong(cur.word);
+    }
+  } else {
+    state.wrong++;
+    state.sessionWrong.push(cur);
+    showToast('다시 한 번 익혀봐요');
+    // Add to persistent wrong list (lesson mode only - already there in review mode)
+    if (state.mode === 'lesson') {
+      addToWrong(cur, state.currentLesson);
+    }
+  }
+  next();
+}
+
+function next() {
+  state.index++;
+  if (state.index >= state.cards.length) {
+    finish();
+  } else {
+    renderCard();
+  }
+}
+
+// ============== GAME MODE ==============
+function pickDistractors(correctWord) {
+  // Find 3 wrong choices, preferring same category for harder questions
+  const others = ALL_WORDS.filter(w => w.word !== correctWord.word);
+  const sameCat = shuffle(others.filter(w => w.category === correctWord.category));
+  const diffCat = shuffle(others.filter(w => w.category !== correctWord.category));
+
+  const distractors = [];
+  // Take up to 3 from same category first
+  for (const w of sameCat) {
+    if (distractors.length >= 3) break;
+    distractors.push(w);
+  }
+  // Fill the rest from different category if needed
+  for (const w of diffCat) {
+    if (distractors.length >= 3) break;
+    distractors.push(w);
+  }
+  return distractors;
+}
+
+function buildGameQuestions() {
+  // 24 questions, all words shuffled, each with 4 choices
+  const shuffled = shuffle(ALL_WORDS);
+  return shuffled.map(correct => {
+    const distractors = pickDistractors(correct);
+    const choices = shuffle([correct, ...distractors]);
+    return {
+      meaning: correct.meaning,
+      multi: correct.multi,
+      answer: correct.word,
+      choices: choices.map(c => c.word)
+    };
+  });
+}
+
+function startGame() {
+  state.gameQuestions = buildGameQuestions();
+  state.gameIndex = 0;
+  state.gameCorrect = 0;
+  state.gameWrong = 0;
+  state.gameAnswered = false;
+  showScreen('game-screen');
+  renderGameQuestion();
+}
+
+function renderGameQuestion() {
+  const q = state.gameQuestions[state.gameIndex];
+  state.gameAnswered = false;
+  state.gameFirstAttempt = true;
+
+  document.getElementById('game-meaning').innerHTML = q.meaning;
+  document.getElementById('game-progress-text').textContent = (state.gameIndex + 1) + ' / ' + state.gameQuestions.length;
+  document.getElementById('game-progress-fill').style.width = (state.gameIndex / state.gameQuestions.length * 100) + '%';
+  document.getElementById('game-score-correct').textContent = '✓ ' + state.gameCorrect;
+  document.getElementById('game-score-wrong').textContent = '✗ ' + state.gameWrong;
+
+  const grid = document.getElementById('choices-grid');
+  grid.innerHTML = '';
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="num">${i + 1}</span><span>${choice}</span>`;
+    btn.onclick = () => handleChoice(btn, choice, q.answer);
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('game-next-btn').classList.remove('show');
+}
+
+function handleChoice(btn, chosen, answer) {
+  if (state.gameAnswered) return;
+
+  if (chosen === answer) {
+    // Correct! Either first try or second try
+    state.gameAnswered = true;
+    btn.classList.add('correct-answer');
+    const allBtns = document.querySelectorAll('.choice-btn');
+    allBtns.forEach(b => b.disabled = true);
+    if (state.gameFirstAttempt) {
+      state.gameCorrect++;
+      showToast('정답이에요! ✨');
+    } else {
+      // Got it on second try — count as wrong but encouraging message
+      state.gameWrong++;
+      showToast('두 번째에 맞혔어요! 👍');
+    }
+    document.getElementById('game-score-correct').textContent = '✓ ' + state.gameCorrect;
+    document.getElementById('game-score-wrong').textContent = '✗ ' + state.gameWrong;
+    document.getElementById('game-next-btn').classList.add('show');
+  } else {
+    // Wrong answer
+    if (state.gameFirstAttempt) {
+      // First wrong — give one more chance
+      state.gameFirstAttempt = false;
+      btn.classList.add('wrong-answer');
+      btn.disabled = true;
+      showToast('다시 생각해보세요 🤔');
+    } else {
+      // Second wrong — game over for this question, show the correct answer
+      state.gameAnswered = true;
+      state.gameWrong++;
+      btn.classList.add('wrong-answer');
+      const allBtns = document.querySelectorAll('.choice-btn');
+      allBtns.forEach(b => {
+        b.disabled = true;
+        const span = b.querySelector('span:last-child');
+        if (span && span.textContent === answer) {
+          b.classList.add('correct-answer');
+        }
+      });
+      showToast('아쉬워요! 정답을 확인해 보세요');
+      document.getElementById('game-score-correct').textContent = '✓ ' + state.gameCorrect;
+      document.getElementById('game-score-wrong').textContent = '✗ ' + state.gameWrong;
+      document.getElementById('game-next-btn').classList.add('show');
+    }
+  }
+}
+
+function nextGameQuestion() {
+  state.gameIndex++;
+  if (state.gameIndex >= state.gameQuestions.length) {
+    finishGame();
+  } else {
+    renderGameQuestion();
+  }
+}
+
+function finishGame() {
+  // Reuse finish screen
+  document.getElementById('final-correct').textContent = state.gameCorrect;
+  document.getElementById('final-wrong').textContent = state.gameWrong;
+  document.getElementById('game-progress-fill').style.width = '100%';
+
+  const total = state.gameQuestions.length;
+  const ratio = state.gameCorrect / total;
+  let emoji, title;
+  if (ratio === 1) { emoji = '🏆'; title = '완벽해요! 모두 정답!'; }
+  else if (ratio >= 0.8) { emoji = '🎉'; title = '아주 잘했어요!'; }
+  else if (ratio >= 0.5) { emoji = '💪'; title = '조금만 더!'; }
+  else { emoji = '📚'; title = '다시 한 번 도전!'; }
+
+  document.getElementById('finish-emoji').textContent = emoji;
+  document.getElementById('finish-title').textContent = title;
+
+  // Mark mode so retry goes back to game
+  state.mode = 'game';
+  showScreen('finish-screen');
+}
+
+// ============== FINISH ==============
+function finish() {
+  document.getElementById('final-correct').textContent = state.correct;
+  document.getElementById('final-wrong').textContent = state.wrong;
+
+  const total = state.cards.length;
+  const ratio = state.correct / total;
+  let emoji, title;
+  if (ratio === 1) { emoji = '🏆'; title = '완벽해요!'; }
+  else if (ratio >= 0.8) { emoji = '🎉'; title = '아주 잘했어요!'; }
+  else if (ratio >= 0.5) { emoji = '💪'; title = '조금만 더!'; }
+  else { emoji = '📚'; title = '다시 한 번 해 봐요'; }
+
+  document.getElementById('finish-emoji').textContent = emoji;
+  document.getElementById('finish-title').textContent = title;
+  document.getElementById('progress-fill').style.width = '100%';
+  showScreen('finish-screen');
+}
+
+// ============== CANVAS DRAWING ==============
+const canvas = document.getElementById('write-canvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+let lastX = 0, lastY = 0;
+let dprUsed = 1;
+
+// Debug display (tap "지우기" 3 times quickly to toggle)
+let debugMode = false;
+let clearTapCount = 0;
+let clearTapTimer = null;
+function debugLog(msg) {
+  if (!debugMode) return;
+  let dbg = document.getElementById('debug-log');
+  if (!dbg) {
+    dbg = document.createElement('div');
+    dbg.id = 'debug-log';
+    dbg.style.cssText = 'position:fixed;top:5px;left:5px;background:rgba(0,0,0,0.85);color:#0f0;padding:6px 8px;font-family:monospace;font-size:11px;z-index:9999;border-radius:6px;max-width:200px;pointer-events:none;line-height:1.3;';
+    document.body.appendChild(dbg);
+  }
+  const time = new Date().toTimeString().slice(0, 8);
+  dbg.innerHTML = `[${time}] ${msg}<br>` + dbg.innerHTML.split('<br>').slice(0, 5).join('<br>');
+}
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) {
+    debugLog('resize skipped: 0px');
+    return false;
+  }
+  dprUsed = window.devicePixelRatio || 1;
+  canvas.width = Math.floor(rect.width * dprUsed);
+  canvas.height = Math.floor(rect.height * dprUsed);
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dprUsed, dprUsed);
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#2b2620';
+  debugLog(`resize: ${rect.width}×${rect.height} dpr=${dprUsed}`);
+  return true;
+}
+
+function getPos(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  return { x: clientX - rect.left, y: clientY - rect.top };
+}
+
+function drawStart(clientX, clientY, source) {
+  if (canvas.width === 0) resizeCanvas();
+  drawing = true;
+  const p = getPos(clientX, clientY);
+  lastX = p.x; lastY = p.y;
+  // Draw a dot for taps
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+  ctx.fillStyle = '#2b2620';
+  ctx.fill();
+  debugLog(`START ${source} @ ${Math.round(p.x)},${Math.round(p.y)}`);
+}
+
+function drawMove(clientX, clientY) {
+  if (!drawing) return;
+  const p = getPos(clientX, clientY);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+  lastX = p.x; lastY = p.y;
+}
+
+function drawEnd() {
+  if (drawing) {
+    drawing = false;
+    debugLog('END');
+  }
+}
+
+function clearCanvas() {
+  if (canvas.width > 0) {
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+  }
+}
+
+// ===== Touch Events (primary for iOS Safari/Chrome) =====
+canvas.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.touches.length > 0) {
+    const t = e.touches[0];
+    drawStart(t.clientX, t.clientY, 'touch');
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.touches.length > 0 && drawing) {
+    const t = e.touches[0];
+    drawMove(t.clientX, t.clientY);
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  drawEnd();
+}, { passive: false });
+
+canvas.addEventListener('touchcancel', function(e) {
+  e.preventDefault();
+  drawEnd();
+}, { passive: false });
+
+// ===== Mouse Events (for desktop & trackpads) =====
+canvas.addEventListener('mousedown', function(e) {
+  e.preventDefault();
+  drawStart(e.clientX, e.clientY, 'mouse');
+});
+canvas.addEventListener('mousemove', function(e) {
+  if (drawing) drawMove(e.clientX, e.clientY);
+});
+canvas.addEventListener('mouseup', drawEnd);
+canvas.addEventListener('mouseleave', drawEnd);
+
+// ===== Pointer Events (modern fallback for Apple Pencil) =====
+// Only attach if no touch support, to avoid double-firing
+if (window.PointerEvent && !('ontouchstart' in window)) {
+  canvas.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    drawStart(e.clientX, e.clientY, 'pointer-' + e.pointerType);
+  });
+  canvas.addEventListener('pointermove', function(e) {
+    if (drawing) drawMove(e.clientX, e.clientY);
+  });
+  canvas.addEventListener('pointerup', drawEnd);
+  canvas.addEventListener('pointercancel', drawEnd);
+}
+
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  clearCanvas();
+});
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => { resizeCanvas(); clearCanvas(); }, 200);
+});
+
+// ============== EVENT BINDINGS ==============
+document.getElementById('card').addEventListener('click', revealAnswer);
+document.getElementById('reveal-btn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  revealAnswer();
+});
+document.getElementById('correct-btn').addEventListener('click', () => markAnswer(true));
+document.getElementById('wrong-btn').addEventListener('click', () => markAnswer(false));
+document.getElementById('clear-btn').addEventListener('click', () => {
+  clearCanvas();
+  // Triple-tap clear button to toggle debug mode
+  clearTapCount++;
+  if (clearTapTimer) clearTimeout(clearTapTimer);
+  clearTapTimer = setTimeout(() => { clearTapCount = 0; }, 800);
+  if (clearTapCount >= 3) {
+    debugMode = !debugMode;
+    clearTapCount = 0;
+    const existing = document.getElementById('debug-log');
+    if (!debugMode && existing) existing.remove();
+    showToast(debugMode ? '🔧 디버그 ON' : '✓ 디버그 OFF');
+    if (debugMode) {
+      debugLog(`UA: ${navigator.userAgent.slice(0, 50)}`);
+      debugLog(`touch: ${'ontouchstart' in window}, pointer: ${!!window.PointerEvent}`);
+      debugLog(`canvas: ${canvas.width}×${canvas.height}`);
+    }
+  }
+});
+document.getElementById('back-btn').addEventListener('click', () => {
+  showScreen('home-screen');
+});
+document.getElementById('retry-btn').addEventListener('click', () => {
+  if (state.mode === 'game') startGame();
+  else if (state.mode === 'review') startReview();
+  else startLesson(state.currentLesson);
+});
+document.getElementById('home-btn').addEventListener('click', () => showScreen('home-screen'));
+document.getElementById('game-btn').addEventListener('click', startGame);
+document.getElementById('game-next-btn').addEventListener('click', nextGameQuestion);
+
+// Save modal
+document.getElementById('save-btn').addEventListener('click', () => {
+  document.getElementById('save-modal').classList.add('show');
+});
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('save-modal').classList.remove('show');
+});
+document.getElementById('save-modal').addEventListener('click', (e) => {
+  if (e.target.id === 'save-modal') {
+    document.getElementById('save-modal').classList.remove('show');
+  }
+});
+
+// ============== INIT ==============
+window.addEventListener('load', () => {
+  resizeCanvas();
+  renderHome();
+});
+
+// Prevent pinch zoom on iPad (but not on canvas - it has its own handling)
+document.addEventListener('gesturestart', e => {
+  if (e.target && e.target.id !== 'write-canvas') e.preventDefault();
+});
+document.addEventListener('dblclick', e => {
+  if (e.target && e.target.id !== 'write-canvas') e.preventDefault();
+});
+</script>
+
+</body>
+</html>
