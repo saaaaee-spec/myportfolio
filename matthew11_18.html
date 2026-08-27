@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>마태복음 성경퀴즈 어드벤처</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans KR","Malgun Gothic",sans-serif;background:linear-gradient(135deg,#fff8d8,#e8f6ff,#f5eaff);color:#263238}
+header{padding:26px 16px;text-align:center;color:white;background:linear-gradient(135deg,#6957d9,#42a5f5);box-shadow:0 5px 18px #0002}
+h1{margin:4px 0 8px;font-size:28px} header p{margin:5px;font-size:14px}
+.wrap{max-width:900px;margin:auto;padding:16px}
+.tabs{display:flex;gap:10px;position:sticky;top:0;z-index:5;padding:8px 0;background:#f3f4fb}
+.tab{flex:1;border:0;border-radius:18px;padding:14px 8px;font-size:16px;font-weight:900;background:white;box-shadow:0 4px 12px #0002;cursor:pointer}
+.tab.active{background:#ffd54f;transform:translateY(-2px)}
+.progress{background:white;border-radius:18px;padding:14px;margin:8px 0 16px;box-shadow:0 4px 12px #0002}
+.bar{height:14px;background:#eee;border-radius:20px;overflow:hidden;margin-top:8px} .fill{height:100%;width:0;background:linear-gradient(90deg,#66bb6a,#ffd54f);transition:.4s}
+.quiz{display:none} .quiz.active{display:block}
+.card{background:white;border-radius:22px;padding:19px;margin:14px 0;box-shadow:0 5px 16px #0002;border:2px solid transparent;transition:.2s}
+.card.solved{border-color:#ffd54f}
+.qnum{font-size:13px;font-weight:900;color:#6754d9} .question{font-size:18px;font-weight:900;line-height:1.55;margin:8px 0 13px}
+.options{display:grid;gap:9px} .option{border:2px solid #e2e2e2;background:#fafafa;border-radius:14px;padding:12px;text-align:left;font-size:15px;cursor:pointer}
+.option:hover{background:#f0f4ff} .option.correct{background:#d9f7df;border-color:#43a047} .option.wrong{background:#ffe0e0;border-color:#e53935}
+.answer{display:none;margin-top:10px;padding:11px;border-radius:12px;background:#fff8d6;font-weight:800}
+.card.solved .answer{display:block}
+.finish{display:none;text-align:center;background:white;border-radius:22px;padding:20px;box-shadow:0 5px 16px #0002;margin:20px 0}
+.reset{border:0;background:#263238;color:white;border-radius:14px;padding:11px 18px;font-weight:800;cursor:pointer}
+</style>
+</head>
+<body>
+<header><div style="font-size:28px">⭐ 📖 🏆 ⭐</div><h1>성경 퀴즈 어드벤처</h1><p>마태복음 11~18장 · 초등 8살 퀴즈</p><p>정답을 맞히고 별을 모아 성경 퀴즈 챔피언이 되어보자!</p></header>
+<div class="wrap">
+<div class="tabs">
+<button class="tab active" onclick="switchQuiz(0)">📖 11~14장</button>
+<button class="tab" onclick="switchQuiz(1)">🔥 15~18장</button>
+</div>
+<div class="progress"><b>🏆 점수</b> <span id="score">0 / 30</span><div class="bar"><div class="fill" id="fill"></div></div></div>
+<div id="quiz0" class="quiz active">
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 1 / 30</div>
+          <div class="question">세례 요한이 제자들을 예수님께 보내어 물어본 질문은?</div>
+          <div class="options"><button class="option" data-index="0">네가 하나님의 아들이냐?</button><button class="option" data-index="1">오실 그이가 당신이오니이까?</button><button class="option" data-index="2">우리가 무엇을 해야 합니까?</button><button class="option" data-index="3">언제 예루살렘으로 올라가십니까?</button></div>
+          <div class="answer">💡 정답: 오실 그이가 당신이오니이까?</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 2 / 30</div>
+          <div class="question">예수님께서 세례 요한을 보며 말씀하신 내용은?</div>
+          <div class="options"><button class="option" data-index="0">그는 위대한 선지자보다 작은 자다.</button><button class="option" data-index="1">그는 선지자 중 하나일 뿐이다.</button><button class="option" data-index="2">여자가 낳은 자 중에 세례 요한보다 큰 이가 일어남이 없다.</button><button class="option" data-index="3">그는 예수님의 제자 중 가장 큰 자다.</button></div>
+          <div class="answer">💡 정답: 여자가 낳은 자 중에 세례 요한보다 큰 이가 일어남이 없다.</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 3 / 30</div>
+          <div class="question">예수님께서 세례 요한을 가리켜 무엇이라고 하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">하나님의 어린 양</button><button class="option" data-index="1">오리라 한 엘리야</button><button class="option" data-index="2">의의 왕</button><button class="option" data-index="3">믿음의 조상</button></div>
+          <div class="answer">💡 정답: 오리라 한 엘리야</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 4 / 30</div>
+          <div class="question">권능을 가장 많이 행했지만 회개하지 않은 성읍은?</div>
+          <div class="options"><button class="option" data-index="0">베들레헴</button><button class="option" data-index="1">가버나움</button><button class="option" data-index="2">예루살렘</button><button class="option" data-index="3">나사렛</button></div>
+          <div class="answer">💡 정답: 가버나움</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 5 / 30</div>
+          <div class="question">예수님께서 회개하지 않은 성읍으로 말씀하신 곳은?</div>
+          <div class="options"><button class="option" data-index="0">고라신과 벳새다</button><button class="option" data-index="1">베다니와 여리고</button><button class="option" data-index="2">나사렛과 가나</button><button class="option" data-index="3">예루살렘과 사마리아</button></div>
+          <div class="answer">💡 정답: 고라신과 벳새다</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 6 / 30</div>
+          <div class="question">'수고하고 무거운 짐 진 자들아'라고 하신 후 약속하신 것은?</div>
+          <div class="options"><button class="option" data-index="0">부자가 되게 하겠다.</button><button class="option" data-index="1">너희를 쉬게 하리라.</button><button class="option" data-index="2">병을 모두 고쳐주겠다.</button><button class="option" data-index="3">모든 원수를 물리치겠다.</button></div>
+          <div class="answer">💡 정답: 너희를 쉬게 하리라.</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 7 / 30</div>
+          <div class="question">예수님께서는 자신에게 배우라고 하시며 자신을 어떤 사람이라고 하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">온유하고 겸손한 자</button><button class="option" data-index="1">강하고 담대한 자</button><button class="option" data-index="2">지혜롭고 총명한 자</button><button class="option" data-index="3">의롭고 거룩한 자</button></div>
+          <div class="answer">💡 정답: 온유하고 겸손한 자</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 8 / 30</div>
+          <div class="question">안식일에 예수님의 제자들이 한 행동은?</div>
+          <div class="options"><button class="option" data-index="0">병자를 고쳤다.</button><button class="option" data-index="1">밀 이삭을 잘라 먹었다.</button><button class="option" data-index="2">성전에서 기도했다.</button><button class="option" data-index="3">물고기를 잡았다.</button></div>
+          <div class="answer">💡 정답: 밀 이삭을 잘라 먹었다.</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 9 / 30</div>
+          <div class="question">바리새인들이 제자들의 행동을 문제 삼은 이유는?</div>
+          <div class="options"><button class="option" data-index="0">도둑질했다고 생각했기 때문에</button><button class="option" data-index="1">안식일에 해서는 안 되는 일을 했다고 생각했기 때문에</button><button class="option" data-index="2">음식을 많이 먹었기 때문에</button><button class="option" data-index="3">성전을 더럽혔기 때문에</button></div>
+          <div class="answer">💡 정답: 안식일에 해서는 안 되는 일을 했다고 생각했기 때문에</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 10 / 30</div>
+          <div class="question">다윗이 먹었던 것을 예로 들어 말씀하신 음식은?</div>
+          <div class="options"><button class="option" data-index="0">만나</button><button class="option" data-index="1">진설병</button><button class="option" data-index="2">무교병</button><button class="option" data-index="3">메추라기</button></div>
+          <div class="answer">💡 정답: 진설병</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 11 / 30</div>
+          <div class="question">안식일에 회당에서 고치신 사람은?</div>
+          <div class="options"><button class="option" data-index="0">눈먼 사람</button><button class="option" data-index="1">귀먹은 사람</button><button class="option" data-index="2">손 마른 사람</button><button class="option" data-index="3">중풍병자</button></div>
+          <div class="answer">💡 정답: 손 마른 사람</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 12 / 30</div>
+          <div class="question">손 마른 사람을 고치실 때 바리새인들이 예수님을 어떻게 하려 했는가?</div>
+          <div class="options"><button class="option" data-index="0">따라가려 했다.</button><button class="option" data-index="1">죽이려고 의논했다.</button><button class="option" data-index="2">제자로 삼으려 했다.</button><button class="option" data-index="3">성전으로 데려가려 했다.</button></div>
+          <div class="answer">💡 정답: 죽이려고 의논했다.</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 13 / 30</div>
+          <div class="question">'상한 갈대를 꺾지 아니하며'와 함께 언급된 것은?</div>
+          <div class="options"><button class="option" data-index="0">꺼져가는 심지</button><button class="option" data-index="1">작은 겨자씨</button><button class="option" data-index="2">잃은 양</button><button class="option" data-index="3">가난한 자</button></div>
+          <div class="answer">💡 정답: 꺼져가는 심지</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 14 / 30</div>
+          <div class="question">귀신 들려 눈 멀고 말 못하는 사람을 예수님께 데려왔을 때?</div>
+          <div class="options"><button class="option" data-index="0">내쫓으셨다.</button><button class="option" data-index="1">고쳐 주셨다.</button><button class="option" data-index="2">제자로 삼으셨다.</button><button class="option" data-index="3">제사장에게 보내셨다.</button></div>
+          <div class="answer">💡 정답: 고쳐 주셨다.</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 15 / 30</div>
+          <div class="question">바리새인들은 예수님이 귀신을 누구의 힘으로 쫓아낸다고 비난했는가?</div>
+          <div class="options"><button class="option" data-index="0">가이사의 힘</button><button class="option" data-index="1">바알세불의 힘</button><button class="option" data-index="2">모세의 힘</button><button class="option" data-index="3">사탄의 제자의 힘</button></div>
+          <div class="answer">💡 정답: 바알세불의 힘</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 16 / 30</div>
+          <div class="question">성령을 모독하는 죄에 대해 예수님께서는?</div>
+          <div class="options"><button class="option" data-index="0">반드시 용서받는다.</button><button class="option" data-index="1">오래 기도하면 용서받는다.</button><button class="option" data-index="2">사하심을 얻지 못한다.</button><button class="option" data-index="3">제사장에게 가야 한다.</button></div>
+          <div class="answer">💡 정답: 사하심을 얻지 못한다.</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 17 / 30</div>
+          <div class="question">사람의 입으로 나오는 말은 어디에서 나온다고 하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">머리</button><button class="option" data-index="1">마음</button><button class="option" data-index="2">영혼</button><button class="option" data-index="3">생각</button></div>
+          <div class="answer">💡 정답: 마음</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 18 / 30</div>
+          <div class="question">서기관과 바리새인들이 예수님께 요구한 것은?</div>
+          <div class="options"><button class="option" data-index="0">병 고치는 기적</button><button class="option" data-index="1">하늘로부터 오는 표적</button><button class="option" data-index="2">성전에서 가르치는 것</button><button class="option" data-index="3">물 위를 걷는 것</button></div>
+          <div class="answer">💡 정답: 하늘로부터 오는 표적</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 19 / 30</div>
+          <div class="question">예수님께서 말씀하신 표적은?</div>
+          <div class="options"><button class="option" data-index="0">모세의 표적</button><button class="option" data-index="1">엘리야의 표적</button><button class="option" data-index="2">요나의 표적</button><button class="option" data-index="3">다윗의 표적</button></div>
+          <div class="answer">💡 정답: 요나의 표적</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 20 / 30</div>
+          <div class="question">요나는 얼마 동안 큰 물고기 뱃속에 있었는가?</div>
+          <div class="options"><button class="option" data-index="0">하루</button><button class="option" data-index="1">사흘 밤낮</button><button class="option" data-index="2">일주일</button><button class="option" data-index="3">열흘</button></div>
+          <div class="answer">💡 정답: 사흘 밤낮</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 21 / 30</div>
+          <div class="question">니느웨 사람들이 무엇을 듣고 회개했다고 하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">모세의 율법</button><button class="option" data-index="1">요나의 전도</button><button class="option" data-index="2">엘리야의 기도</button><button class="option" data-index="3">다윗의 노래</button></div>
+          <div class="answer">💡 정답: 요나의 전도</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 22 / 30</div>
+          <div class="question">예수님의 '내 형제와 자매와 어머니'는 누구인가?</div>
+          <div class="options"><button class="option" data-index="0">예수님의 친척들</button><button class="option" data-index="1">하늘에 계신 아버지의 뜻대로 행하는 자</button><button class="option" data-index="2">열두 제자</button><button class="option" data-index="3">예루살렘 사람들</button></div>
+          <div class="answer">💡 정답: 하늘에 계신 아버지의 뜻대로 행하는 자</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 23 / 30</div>
+          <div class="question">마태복음 13장에서 바닷가에서 말씀하실 때 예수님은 어디에 앉으셨는가?</div>
+          <div class="options"><button class="option" data-index="0">배 위</button><button class="option" data-index="1">산 위</button><button class="option" data-index="2">성전 안</button><button class="option" data-index="3">길가</button></div>
+          <div class="answer">💡 정답: 배 위</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 24 / 30</div>
+          <div class="question">씨 뿌리는 비유에서 좋은 땅은 무엇을 의미하는가?</div>
+          <div class="options"><button class="option" data-index="0">말씀을 듣고 깨닫는 자</button><button class="option" data-index="1">부자가 되는 자</button><button class="option" data-index="2">율법을 많이 아는 자</button><button class="option" data-index="3">제자가 되는 자</button></div>
+          <div class="answer">💡 정답: 말씀을 듣고 깨닫는 자</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 25 / 30</div>
+          <div class="question">겨자씨는 무엇과 비교되었는가?</div>
+          <div class="options"><button class="option" data-index="0">천국</button><button class="option" data-index="1">믿음</button><button class="option" data-index="2">율법</button><button class="option" data-index="3">사랑</button></div>
+          <div class="answer">💡 정답: 천국</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 26 / 30</div>
+          <div class="question">좋은 씨를 뿌린 밭에 원수가 뿌린 것은?</div>
+          <div class="options"><button class="option" data-index="0">가시</button><button class="option" data-index="1">돌</button><button class="option" data-index="2">가라지</button><button class="option" data-index="3">겨자씨</button></div>
+          <div class="answer">💡 정답: 가라지</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 27 / 30</div>
+          <div class="question">천국은 또 무엇에 비유되었는가?</div>
+          <div class="options"><button class="option" data-index="0">감추인 보화</button><button class="option" data-index="1">은화 한 닢</button><button class="option" data-index="2">잃은 양</button><button class="option" data-index="3">포도원</button></div>
+          <div class="answer">💡 정답: 감추인 보화</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 28 / 30</div>
+          <div class="question">세례 요한을 죽인 사람은?</div>
+          <div class="options"><button class="option" data-index="0">빌라도</button><button class="option" data-index="1">헤롯</button><button class="option" data-index="2">가야바</button><button class="option" data-index="3">헤롯 빌립</button></div>
+          <div class="answer">💡 정답: 헤롯</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 29 / 30</div>
+          <div class="question">오병이어에서 사용된 음식은?</div>
+          <div class="options"><button class="option" data-index="0">떡 다섯 개와 물고기 두 마리</button><button class="option" data-index="1">떡 두 개와 물고기 다섯 마리</button><button class="option" data-index="2">떡 일곱 개와 물고기 두 마리</button><button class="option" data-index="3">떡 다섯 개와 물고기 일곱 마리</button></div>
+          <div class="answer">💡 정답: 떡 다섯 개와 물고기 두 마리</div>
+        </article>
+        <article class="card" data-answer="3">
+          <div class="qnum">⭐ 문제 30 / 30</div>
+          <div class="question">오병이어 후 남은 조각은 몇 바구니였는가?</div>
+          <div class="options"><button class="option" data-index="0">5바구니</button><button class="option" data-index="1">7바구니</button><button class="option" data-index="2">10바구니</button><button class="option" data-index="3">12바구니</button></div>
+          <div class="answer">💡 정답: 12바구니</div>
+        </article></div>
+<div id="quiz1" class="quiz">
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 1 / 30</div>
+          <div class="question">바리새인과 서기관들이 제자들에게 문제 삼은 것은?</div>
+          <div class="options"><button class="option" data-index="0">기도하지 않는 것</button><button class="option" data-index="1">손을 씻지 않고 음식을 먹는 것</button><button class="option" data-index="2">안식일에 걷는 것</button><button class="option" data-index="3">성전에 가지 않는 것</button></div>
+          <div class="answer">💡 정답: 손을 씻지 않고 음식을 먹는 것</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 2 / 30</div>
+          <div class="question">예수님께서는 사람을 더럽게 하는 것이 무엇이라고 말씀하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">먹는 음식</button><button class="option" data-index="1">손</button><button class="option" data-index="2">입에서 나오는 것</button><button class="option" data-index="3">옷</button></div>
+          <div class="answer">💡 정답: 입에서 나오는 것</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 3 / 30</div>
+          <div class="question">사람의 입에서 나오는 것은 어디에서 나오는가?</div>
+          <div class="options"><button class="option" data-index="0">마음</button><button class="option" data-index="1">머리</button><button class="option" data-index="2">위</button><button class="option" data-index="3">영혼</button></div>
+          <div class="answer">💡 정답: 마음</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 4 / 30</div>
+          <div class="question">두로와 시돈 지방에서 예수님께 간 여인은?</div>
+          <div class="options"><button class="option" data-index="0">사마리아 여인</button><button class="option" data-index="1">가나안 여인</button><button class="option" data-index="2">애굽 여인</button><button class="option" data-index="3">갈릴리 여인</button></div>
+          <div class="answer">💡 정답: 가나안 여인</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 5 / 30</div>
+          <div class="question">가나안 여인의 딸에게 있었던 문제는?</div>
+          <div class="options"><button class="option" data-index="0">중풍병</button><button class="option" data-index="1">눈병</button><button class="option" data-index="2">귀신 들림</button><button class="option" data-index="3">나병</button></div>
+          <div class="answer">💡 정답: 귀신 들림</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 6 / 30</div>
+          <div class="question">예수님께서는 가나안 여인의 믿음을 어떻게 평가하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">작은 믿음아</button><button class="option" data-index="1">큰 믿음아</button><button class="option" data-index="2">의로운 믿음아</button><button class="option" data-index="3">참된 믿음아</button></div>
+          <div class="answer">💡 정답: 큰 믿음아</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 7 / 30</div>
+          <div class="question">칠병이어 사건에서 떡은 몇 개였는가?</div>
+          <div class="options"><button class="option" data-index="0">5개</button><button class="option" data-index="1">6개</button><button class="option" data-index="2">7개</button><button class="option" data-index="3">12개</button></div>
+          <div class="answer">💡 정답: 7개</div>
+        </article>
+        <article class="card" data-answer="3">
+          <div class="qnum">⭐ 문제 8 / 30</div>
+          <div class="question">칠병이어 사건에서 물고기는?</div>
+          <div class="options"><button class="option" data-index="0">한 마리</button><button class="option" data-index="1">두 마리</button><button class="option" data-index="2">일곱 마리</button><button class="option" data-index="3">작은 생선 몇 마리</button></div>
+          <div class="answer">💡 정답: 작은 생선 몇 마리</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 9 / 30</div>
+          <div class="question">칠병이어 후 남은 조각은 몇 광주리였는가?</div>
+          <div class="options"><button class="option" data-index="0">5광주리</button><button class="option" data-index="1">7광주리</button><button class="option" data-index="2">12광주리</button><button class="option" data-index="3">14광주리</button></div>
+          <div class="answer">💡 정답: 7광주리</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 10 / 30</div>
+          <div class="question">바리새인과 사두개인들이 예수님께 요구한 것은?</div>
+          <div class="options"><button class="option" data-index="0">병자를 고치는 것</button><button class="option" data-index="1">하늘로부터 오는 표적</button><button class="option" data-index="2">세금을 내는 것</button><button class="option" data-index="3">제자를 보내는 것</button></div>
+          <div class="answer">💡 정답: 하늘로부터 오는 표적</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 11 / 30</div>
+          <div class="question">예수님께서 주의하라고 하신 바리새인과 사두개인들의 것은?</div>
+          <div class="options"><button class="option" data-index="0">율법</button><button class="option" data-index="1">누룩</button><button class="option" data-index="2">옷</button><button class="option" data-index="3">기도</button></div>
+          <div class="answer">💡 정답: 누룩</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 12 / 30</div>
+          <div class="question">'너희는 나를 누구라 하느냐'에 대답한 제자는?</div>
+          <div class="options"><button class="option" data-index="0">요한</button><button class="option" data-index="1">야고보</button><button class="option" data-index="2">베드로</button><button class="option" data-index="3">안드레</button></div>
+          <div class="answer">💡 정답: 베드로</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 13 / 30</div>
+          <div class="question">베드로의 신앙고백은?</div>
+          <div class="options"><button class="option" data-index="0">주는 선지자시니이다.</button><button class="option" data-index="1">주는 그리스도시요 살아 계신 하나님의 아들이시니이다.</button><button class="option" data-index="2">주는 우리의 왕이시니이다.</button><button class="option" data-index="3">주는 하나님의 종이시니이다.</button></div>
+          <div class="answer">💡 정답: 주는 그리스도시요 살아 계신 하나님의 아들이시니이다.</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 14 / 30</div>
+          <div class="question">예수님께서 베드로에게 '바요나'와 함께 부르신 이름은?</div>
+          <div class="options"><button class="option" data-index="0">시몬</button><button class="option" data-index="1">요한</button><button class="option" data-index="2">야고보</button><button class="option" data-index="3">안드레</button></div>
+          <div class="answer">💡 정답: 시몬</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 15 / 30</div>
+          <div class="question">예수님을 따르려면 무엇을 져야 하는가?</div>
+          <div class="options"><button class="option" data-index="0">멍에</button><button class="option" data-index="1">십자가</button><button class="option" data-index="2">율법</button><button class="option" data-index="3">검</button></div>
+          <div class="answer">💡 정답: 십자가</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 16 / 30</div>
+          <div class="question">변화산에 올라갈 때 함께 간 세 제자는?</div>
+          <div class="options"><button class="option" data-index="0">베드로·야고보·요한</button><button class="option" data-index="1">베드로·안드레·요한</button><button class="option" data-index="2">야고보·요한·마태</button><button class="option" data-index="3">열두 제자 모두</button></div>
+          <div class="answer">💡 정답: 베드로·야고보·요한</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 17 / 30</div>
+          <div class="question">변화산에서 예수님과 함께 나타난 사람은?</div>
+          <div class="options"><button class="option" data-index="0">아브라함과 다윗</button><button class="option" data-index="1">모세와 엘리야</button><button class="option" data-index="2">모세와 다윗</button><button class="option" data-index="3">엘리야와 세례 요한</button></div>
+          <div class="answer">💡 정답: 모세와 엘리야</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 18 / 30</div>
+          <div class="question">변화산에서 하늘에서 들려온 말씀은?</div>
+          <div class="options"><button class="option" data-index="0">이는 나의 종이다.</button><button class="option" data-index="1">이는 내 사랑하는 아들이요 내 기뻐하는 자니 너희는 그의 말을 들으라.</button><button class="option" data-index="2">이는 위대한 선지자다.</button><button class="option" data-index="3">그를 따르라.</button></div>
+          <div class="answer">💡 정답: 이는 내 사랑하는 아들이요 내 기뻐하는 자니 너희는 그의 말을 들으라.</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 19 / 30</div>
+          <div class="question">믿음이 있다면 산을 옮길 수 있다고 하신 믿음의 크기는?</div>
+          <div class="options"><button class="option" data-index="0">겨자씨 한 알</button><button class="option" data-index="1">콩 한 알</button><button class="option" data-index="2">밀알 하나</button><button class="option" data-index="3">작은 돌 하나</button></div>
+          <div class="answer">💡 정답: 겨자씨 한 알</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 20 / 30</div>
+          <div class="question">성전세를 내기 위해 베드로가 물고기 입에서 얻은 것은?</div>
+          <div class="options"><button class="option" data-index="0">은화</button><button class="option" data-index="1">한 세겔</button><button class="option" data-index="2">금화</button><button class="option" data-index="3">두 달란트</button></div>
+          <div class="answer">💡 정답: 한 세겔</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 21 / 30</div>
+          <div class="question">천국에서 큰 자가 되려면 어떻게 해야 하는가?</div>
+          <div class="options"><button class="option" data-index="0">자신을 높여야 한다.</button><button class="option" data-index="1">어린아이와 같이 자기를 낮추어야 한다.</button><button class="option" data-index="2">율법을 많이 알아야 한다.</button><button class="option" data-index="3">재산을 많이 가져야 한다.</button></div>
+          <div class="answer">💡 정답: 어린아이와 같이 자기를 낮추어야 한다.</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 22 / 30</div>
+          <div class="question">어린아이와 같은 자가 되려면?</div>
+          <div class="options"><button class="option" data-index="0">겸손하게 되어야 한다.</button><button class="option" data-index="1">공부를 많이 해야 한다.</button><button class="option" data-index="2">율법을 모두 외워야 한다.</button><button class="option" data-index="3">부자가 되어야 한다.</button></div>
+          <div class="answer">💡 정답: 겸손하게 되어야 한다.</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 23 / 30</div>
+          <div class="question">잃은 양 한 마리를 찾기 위해 몇 마리를 두고 갔는가?</div>
+          <div class="options"><button class="option" data-index="0">10마리</button><button class="option" data-index="1">50마리</button><button class="option" data-index="2">99마리</button><button class="option" data-index="3">100마리</button></div>
+          <div class="answer">💡 정답: 99마리</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 24 / 30</div>
+          <div class="question">형제가 죄를 범했을 때 처음에는 어떻게 하라고 하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">모든 사람에게 알린다.</button><button class="option" data-index="1">혼자 가서 권고한다.</button><button class="option" data-index="2">바로 교회에서 내보낸다.</button><button class="option" data-index="3">아무 말도 하지 않는다.</button></div>
+          <div class="answer">💡 정답: 혼자 가서 권고한다.</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 25 / 30</div>
+          <div class="question">혼자 권고했는데 듣지 않으면 다음에는 몇 명을 데리고 가는가?</div>
+          <div class="options"><button class="option" data-index="0">한두 사람</button><button class="option" data-index="1">세 사람</button><button class="option" data-index="2">열두 사람</button><button class="option" data-index="3">일곱 사람</button></div>
+          <div class="answer">💡 정답: 한두 사람</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 26 / 30</div>
+          <div class="question">베드로가 형제를 몇 번까지 용서해야 하는지 질문했을 때 제시한 숫자는?</div>
+          <div class="options"><button class="option" data-index="0">3번</button><button class="option" data-index="1">5번</button><button class="option" data-index="2">7번</button><button class="option" data-index="3">10번</button></div>
+          <div class="answer">💡 정답: 7번</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 27 / 30</div>
+          <div class="question">예수님께서는 몇 번까지 용서하라고 하셨는가?</div>
+          <div class="options"><button class="option" data-index="0">일곱 번</button><button class="option" data-index="1">일곱 번씩 일흔 번</button><button class="option" data-index="2">일흔 번씩 일곱 번</button><button class="option" data-index="3">백 번</button></div>
+          <div class="answer">💡 정답: 일흔 번씩 일곱 번</div>
+        </article>
+        <article class="card" data-answer="0">
+          <div class="qnum">⭐ 문제 28 / 30</div>
+          <div class="question">일만 달란트 빚진 종은 주인에게 무엇을 해 달라고 간청했는가?</div>
+          <div class="options"><button class="option" data-index="0">조금만 기다려 달라고 했다.</button><button class="option" data-index="1">모두 갚겠다고 했다.</button><button class="option" data-index="2">빚을 없애 달라고 했다.</button><button class="option" data-index="3">다른 종에게 빌려 달라고 했다.</button></div>
+          <div class="answer">💡 정답: 조금만 기다려 달라고 했다.</div>
+        </article>
+        <article class="card" data-answer="2">
+          <div class="qnum">⭐ 문제 29 / 30</div>
+          <div class="question">큰 빚을 탕감받은 종은 자신에게 적은 돈을 빚진 동료에게 어떻게 했는가?</div>
+          <div class="options"><button class="option" data-index="0">용서했다.</button><button class="option" data-index="1">기다려 주었다.</button><button class="option" data-index="2">빚을 갚으라고 하고 옥에 가두었다.</button><button class="option" data-index="3">주인에게 대신 갚아 달라고 했다.</button></div>
+          <div class="answer">💡 정답: 빚을 갚으라고 하고 옥에 가두었다.</div>
+        </article>
+        <article class="card" data-answer="1">
+          <div class="qnum">⭐ 문제 30 / 30</div>
+          <div class="question">일만 달란트 비유가 강조하는 핵심은?</div>
+          <div class="options"><button class="option" data-index="0">돈을 많이 벌어야 한다.</button><button class="option" data-index="1">받은 용서를 기억하고 다른 사람도 용서해야 한다.</button><button class="option" data-index="2">빚은 반드시 갚아야 한다.</button><button class="option" data-index="3">종은 주인에게 순종해야 한다.</button></div>
+          <div class="answer">💡 정답: 받은 용서를 기억하고 다른 사람도 용서해야 한다.</div>
+        </article></div>
+<div id="finish" class="finish"><div style="font-size:42px">🎉🏆🎉</div><h2>퀴즈 완료!</h2><p id="finishText"></p><button class="reset" onclick="resetQuiz()">🔄 다시 도전하기</button></div>
+</div>
+<script>
+let current=0, scores=[0,0], done=[new Set(),new Set()];
+const letters=["①","②","③","④"];
+function update(){
+ document.getElementById("score").textContent=scores[current]+" / 30";
+ document.getElementById("fill").style.width=(scores[current]/30*100)+"%";
+ if(done[current].size===30){
+  document.getElementById("finish").style.display="block";
+  document.getElementById("finishText").textContent="총 30문제를 모두 풀었어! 점수는 "+scores[current]+"점이야. 틀린 문제의 정답을 다시 읽고 한 번 더 도전해 보자!";
+ }else document.getElementById("finish").style.display="none";
+}
+function bind(n){
+ document.querySelectorAll("#quiz"+n+" .card").forEach((card,i)=>{
+  card.querySelectorAll(".option").forEach((btn,j)=>{
+   btn.addEventListener("click",()=>{
+    if(done[n].has(i)) return;
+    done[n].add(i);
+    const ans=Number(card.dataset.answer);
+    card.classList.add("solved");
+    card.querySelectorAll(".option").forEach((b,k)=>{if(k===ans)b.classList.add("correct");});
+    if(j===ans){scores[n]++;btn.classList.add("correct");}
+    else btn.classList.add("wrong");
+    update();
+   });
+  });
+ });
+}
+function switchQuiz(n){
+ current=n;
+ document.querySelectorAll(".tab").forEach((b,i)=>b.classList.toggle("active",i===n));
+ document.querySelectorAll(".quiz").forEach((q,i)=>q.classList.toggle("active",i===n));
+ window.scrollTo({top:0,behavior:"smooth"});
+ update();
+}
+function resetQuiz(){
+ const box=document.querySelector("#quiz"+current);
+ box.querySelectorAll(".card").forEach(c=>{
+  c.classList.remove("solved");
+  c.querySelectorAll(".option").forEach(b=>b.classList.remove("correct","wrong"));
+ });
+ scores[current]=0;done[current]=new Set();update();window.scrollTo({top:0,behavior:"smooth"});
+}
+bind(0);bind(1);update();
+</script>
+</body>
+</html>
